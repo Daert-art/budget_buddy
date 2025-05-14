@@ -1,14 +1,13 @@
 from django.db import models
+from django.db.models import TextChoices
 
-class CategoryType(models.TextChoices):
-    INCOME  = 'INCOME',  'Дохід'
+
+class TransactionType(models.TextChoices):
+    INCOME = 'INCOME', 'Дохід'
     EXPENSE = 'EXPENSE', 'Витрата'
 
-class OperationType(models.TextChoices):
-    INCOME  = 'INCOME',  'Дохід'
-    EXPENSE = 'EXPENSE', 'Витрата'
 
-class Frequency(models.TextChoices):
-    DAILY   = 'DAILY',   'Щодня'
-    WEEKLY  = 'WEEKLY',  'Щотижня'
+class Frequency(TextChoices):
+    DAILY = 'DAILY', 'Щодня'
+    WEEKLY = 'WEEKLY', 'Щотижня'
     MONTHLY = 'MONTHLY', 'Щомісяця'

@@ -55,8 +55,10 @@ ROOT_URLCONF = 'budget_buddy.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
-        ,
+        # відносне розміщення шаблонів
+        #'DIRS': []
+        # підключення глобальної папки шаблонів
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

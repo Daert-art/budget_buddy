@@ -3,7 +3,6 @@ from apps.core.models.base_models import TimeStampedModel
 from django.conf import settings
 
 
-
 class Budget(TimeStampedModel):
     id = models.AutoField(primary_key=True)
 

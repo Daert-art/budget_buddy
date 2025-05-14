@@ -4,7 +4,6 @@ from django.db import models
 from apps.core.models.base_models import TimeStampedModel
 
 
-
 class Account(TimeStampedModel):
     # Основні поля
     id = models.AutoField(primary_key=True)
