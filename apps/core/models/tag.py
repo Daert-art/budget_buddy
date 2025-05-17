@@ -7,7 +7,8 @@ class Tag(TimeStampedModel):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50)
 
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='tags')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True,
+                             related_name='tags')
 
     def __str__(self):
         return self.name

@@ -10,8 +10,10 @@ class Budget(TimeStampedModel):
     period_start = models.DateField()
     period_end = models.DateField()
 
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='budgets')
-    category = models.ForeignKey("Category", on_delete=models.CASCADE, related_name='budgets')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True,
+                             related_name='budgets')
+    category = models.ForeignKey("Category", on_delete=models.CASCADE, null=True, blank=True,
+                                 related_name='budgets')
 
     def __str__(self):
         return (

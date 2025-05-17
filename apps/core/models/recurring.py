@@ -12,9 +12,12 @@ class Recurring(TimeStampedModel):
     frequency = models.CharField(max_length=10, choices=Frequency.choices, default=Frequency.MONTHLY)
     next_date = models.DateField()
 
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='recurrings')
-    account = models.ForeignKey("Account", on_delete=models.PROTECT, related_name='recurrings')
-    category = models.ForeignKey("Category", on_delete=models.PROTECT, related_name='recurrings')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True,
+                             related_name='recurrings')
+    account = models.ForeignKey("Account", on_delete=models.PROTECT, null=True, blank=True,
+                                related_name='recurrings')
+    category = models.ForeignKey("Category", on_delete=models.PROTECT, null=True, blank=True,
+                                 related_name='recurrings')
 
     def __str__(self):
         return (
