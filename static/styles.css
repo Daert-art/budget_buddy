@@ -1,0 +1,85 @@
+* {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+body {
+    padding: 10px;
+    background-color: #1e1e2f;
+    color: #e0e0e0;
+}
+
+.container {
+    margin: 30px auto;
+    max-width: 1200px;
+}
+
+/* >Header */
+.header {
+    background: linear-gradient(to right, #2c3e50, #4b79a1);
+    margin: 0 auto;
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    display: flex;
+    gap: 25px;
+    align-items: center;
+    color: #ffffff;
+}
+
+.header-el a {
+    color: #ffffff;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.header-el a:hover {
+    color: #ffd700;
+}
+/* <Header */
+
+/* >Table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 30px;
+    background-color: #2a2a3b;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    color: #f0f0f0;
+}
+
+table th {
+    background: #3e3e55;
+    color: #ffffff;
+    font-weight: 600;
+    padding: 12px;
+    border-bottom: 2px solid #4f4f70;
+}
+
+table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #44445a;
+}
+
+table tr:nth-child(even) {
+    background: #323244;
+}
+
+table tr:hover {
+    background: #3f3f5c;
+    transition: background 0.2s ease;
+    cursor: pointer;
+}
+/* <Table */
+
+/* >Footer */
+footer {
+    text-align: center;
+    color: #888;
+    margin-top: 40px;
+    font-size: 14px;
+}
+/* <Footer */

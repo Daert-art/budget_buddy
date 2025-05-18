@@ -13,3 +13,6 @@ def about_project(request):
 
 def about_core(request):
     return render(request, 'core/about_core.html')
+
+def operations(request):
+    return render(request, 'core/pages/operations.html')
