@@ -16,4 +16,5 @@ urlpatterns = [
 
     path('', RedirectView.as_view(pattern_name='core:operations', permanent=False)),
     path('operations/', views.operations, name='operations'), #core:operations
+    path('operations/<int:pk>/',views.OperationDetailUpdateView.as_view(), name='operation_detail')
 ]

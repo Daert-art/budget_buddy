@@ -1,21 +1,39 @@
-* {
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
     font-family: 'Segoe UI', sans-serif;
     font-size: 16px;
-    box-sizing: border-box;
-}
-
-body {
-    padding: 10px;
     background-color: #1e1e2f;
     color: #e0e0e0;
 }
 
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.main-wrapper {
+    flex: 1 0 auto;
+}
+
+footer {
+    flex-shrink: 0;
+    text-align: center;
+    color: #888;
+    padding: 20px;
+    font-size: 14px;
+    background-color: transparent;
+}
+
+/* Контейнер */
 .container {
     margin: 30px auto;
     max-width: 1200px;
 }
 
-/* >Header */
+/* Header */
 .header {
     background: linear-gradient(to right, #2c3e50, #4b79a1);
     margin: 0 auto;
@@ -37,9 +55,8 @@ body {
 .header-el a:hover {
     color: #ffd700;
 }
-/* <Header */
 
-/* >Table */
+/* Table */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -73,13 +90,61 @@ table tr:hover {
     transition: background 0.2s ease;
     cursor: pointer;
 }
-/* <Table */
 
-/* >Footer */
+/* Form */
+.form-flex {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    align-items: center;
+    background-color: #2a2a3b;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.form-flex input,
+.form-flex select {
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    background-color: #3e3e55;
+    color: white;
+    outline: none;
+}
+
+.form-flex button {
+    padding: 10px 20px;
+    background-color: #4b79a1;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.form-flex button:hover {
+    background-color: #35536b;
+}
+
+.page-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 100vh;
+}
+
+.main-wrapper {
+    flex: 1;
+    padding-bottom: 20px;
+}
+
 footer {
+    flex-shrink: 0;
     text-align: center;
     color: #888;
-    margin-top: 40px;
+    padding: 20px;
     font-size: 14px;
+    background-color: transparent;
 }
-/* <Footer */

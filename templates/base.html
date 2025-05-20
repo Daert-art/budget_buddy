@@ -7,10 +7,14 @@
     <link rel="stylesheet" href="{% static 'styles.css' %}">
 </head>
 <body>
-    {% block header %}{% include "core/includes/header.html" %}{% endblock %}
-    <main>
-        {% block content %}{% endblock %}
-    </main>
-    {% include "core/includes/footer.html" %}
+    <div class="page-wrapper">
+        {% block header %}{% include "core/includes/header.html" %}{% endblock %}
+
+        <main class="main-wrapper">
+            {% block content %}{% endblock %}
+        </main>
+
+        {% include "core/includes/footer.html" %}
+    </div>
 </body>
 </html>
