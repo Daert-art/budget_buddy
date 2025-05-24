@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>Видалити тег “{{ object.name }}”?</h1>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit">Так, видалити</button>
+    <a href="{% url 'core:tag_list' %}">Ні, повернутися назад</a>
+  </form>
+{% endblock %}

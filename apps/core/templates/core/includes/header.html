@@ -1,11 +1,23 @@
+{% load static %}
+
 <header>
-    <nav class="header">
-        <div class="header-el"><a href="{% url 'core:operations' %}">Operations</a></div>
+  <nav class="header">
+    <!-- Блок з логотипом і назвою -->
+    <div class="header-brand">
+      <a href="{% url 'core:operations' %}">
+        <!-- Поклади файл logo.png в static/images/ -->
+        <img src="{% static 'images/logo.png' %}"
+             alt="BudgetBuddy Logo"
+             class="app-logo">
+        <span class="app-title">BudgetBuddy - твій фінансовий помічник</span>
+      </a>
+    </div>
 
-
-        <div class="header-el"><a href="/error">Error</a></div>
-        <div class="header-el"><a href="/users">Users</a></div>
-        <div class="header-el"><a href="/logout">logout</a></div>
-        <div style="clear: both;"></div>
-    </nav>
+    <!-- Навігація -->
+    <ul class="header-nav">
+      <li><a href="{% url 'core:operations' %}">Operations</a></li>
+      <li><a href="{% url 'core:tag_list'    %}">Tags</a></li>
+      <li><a href="{% url 'logout'            %}">Logout</a></li>
+    </ul>
+  </nav>
 </header>

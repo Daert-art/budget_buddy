@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>{% if form.instance.pk %}Редагувати{% else %}Додати{% endif %} тег</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.name.label_tag }} {{ form.name }}
+    <button type="submit">Зберегти</button>
+  </form>
+  <a href="{% url 'core:tag_list' %}">← Назад до списку тегів</a>
+{% endblock %}

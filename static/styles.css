@@ -34,26 +34,79 @@ footer {
 }
 
 /* Header */
+/*.header {*/
+/*    background: linear-gradient(to right, #2c3e50, #4b79a1);*/
+/*    margin: 0 auto;*/
+/*    padding: 15px 20px;*/
+/*    border-radius: 10px;*/
+/*    box-shadow: 0 4px 8px rgba(0,0,0,0.3);*/
+/*    display: flex;*/
+/*    gap: 25px;*/
+/*    align-items: center;*/
+/*    color: #ffffff;*/
+/*}*/
+
+/*.header-el a {*/
+/*    color: #ffffff;*/
+/*    text-decoration: none;*/
+/*    transition: color 0.2s ease;*/
+/*}*/
+
+/*.header-el a:hover {*/
+/*    color: #ffd700;*/
+/*}*/
 .header {
-    background: linear-gradient(to right, #2c3e50, #4b79a1);
-    margin: 0 auto;
-    padding: 15px 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-    display: flex;
-    gap: 25px;
-    align-items: center;
-    color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  background: linear-gradient(to right, #2c3e50, #4b79a1);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.header-el a {
-    color: #ffffff;
-    text-decoration: none;
-    transition: color 0.2s ease;
+.header-brand {
+  display: flex;
+  align-items: center;
 }
 
-.header-el a:hover {
-    color: #ffd700;
+.header-brand a:hover .app-title {
+  color: gold;
+}
+
+.header-brand a:hover .app-logo {
+  filter: brightness(1.2);
+}
+
+.app-logo {
+  height: 150px;
+  margin-right: 1.5rem;
+}
+
+.app-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #335;
+}
+
+.header-nav {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+.header-nav li + li {
+  margin-left: 1rem;
+}
+
+.header-nav a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 900;
+}
+
+.header-nav a:hover {
+  color: gold;
 }
 
 /* Table */
@@ -89,6 +142,11 @@ table tr:hover {
     background: #3f3f5c;
     transition: background 0.2s ease;
     cursor: pointer;
+}
+
+table.form-container th,
+table.form-container td {
+    text-align: center;
 }
 
 /* Form */

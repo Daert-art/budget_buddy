@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>Мої теги</h1>
+  <a href="{% url 'core:tag_add' %}">➕ Додати новий тег</a>
+  <ul>
+    {% for tag in tags %}
+      <li>
+        {{ tag.name }}
+        [<a href="{% url 'core:tag_edit' tag.pk %}">Редагувати</a>]
+        [<a href="{% url 'core:tag_delete' tag.pk %}">Видалити</a>]
+      </li>
+    {% empty %}
+      <li>Поки що немає жодного тегу.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

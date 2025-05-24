@@ -3,17 +3,29 @@
 {% block content %}
 
     <div class="container">
+        <h3>Operation</h3>
         <form method="post">
             <table>
                 {% csrf_token %}
                 {{ operation_form.as_table }}
                 <tr>
                     <td>
-                         <button type="submit" name="submit_operation">💾</button>
+                        <button type="submit" name="submit_operation">💾Зберегти</button>
+
                     </td>
                 </tr>
             </table>
         </form>
+        <form method="post"
+              action="{% url 'core:operation_delete' operation.pk %}"
+              style="margin-top:1rem;">
+            {% csrf_token %}
+            <button type="submit"
+                    class="btn btn-danger">
+                🗑️Видалити операцію
+            </button>
+        </form>
     </div>
+
 
 {% endblock content %}
