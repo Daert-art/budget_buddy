@@ -4,7 +4,8 @@ from django.db import models
 from datetime import date as _date
 from django.conf import settings
 from apps.core.models.base_models import TimeStampedModel
-from apps.core.models.enums import TransactionType
+from apps.core.models.enums import TransactionType, Frequency
+
 
 class Operation(TimeStampedModel):
     id = models.AutoField(primary_key=True)
@@ -43,6 +44,7 @@ class Operation(TimeStampedModel):
         null=True, blank=True,
         related_name='operations'
     )
+
 
     class Meta:
         ordering = ['-date']

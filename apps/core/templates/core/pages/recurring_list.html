@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Повторювані операції{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>🔁 Повторювані операції</h2>
+    <p><a href="{% url 'core:recurring_create' %}" class="btn btn-success">➕ Додати</a></p>
+
+    {% if recurrings %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Сума</th>
+                <th>Опис</th>
+                <th>Тип</th>
+                <th>Частота</th>
+                <th>Наступна дата</th>
+                <th>Дії</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in recurrings %}
+            <tr>
+                <td>{{ r.amount }}</td>
+                <td>{{ r.description }}</td>
+                <td>{{ r.get_type_display }}</td>
+                <td>{{ r.get_frequency_display }}</td>
+                <td>{{ r.next_date }}</td>
+                <td>
+                    <a href="{% url 'core:recurring_update' r.pk %}" class="btn btn-sm btn-outline-primary">✏️</a>
+                    <form action="{% url 'core:recurring_delete' r.pk %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-outline-danger"
+                                onclick="return confirm('Видалити повторювану операцію?')">🗑️</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <p>Немає повторюваних операцій.</p>
+    {% endif %}
+</div>
+{% endblock %}

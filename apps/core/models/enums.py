@@ -11,3 +11,10 @@ class Frequency(TextChoices):
     DAILY = 'DAILY', 'Щодня'
     WEEKLY = 'WEEKLY', 'Щотижня'
     MONTHLY = 'MONTHLY', 'Щомісяця'
+    YEARLY = 'YEARLY', 'Щороку'
+
+class Currency(models.TextChoices):
+    UAH = 'UAH', '₴ Гривня'
+    USD = 'USD', '$ Долар'
+    EUR = 'EUR', '€ Євро'
+

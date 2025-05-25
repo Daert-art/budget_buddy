@@ -9,6 +9,14 @@ class Tag(TimeStampedModel):
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True,
                              related_name='tags')
+    category = models.ForeignKey(
+        'Category',
+        on_delete=models.CASCADE,
+        related_name='tags',
+        null=True,
+        blank=True,
+        help_text="Категорія, до якої належить цей тег"
+    )
 
     def __str__(self):
-        return self.name
+        return f'{self.name} (категорія: {self.category.name if self.category else "—"})'

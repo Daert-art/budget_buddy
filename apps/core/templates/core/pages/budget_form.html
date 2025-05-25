@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Budget Form{% endblock %}
+{% block content %}
+<div class="container">
+    <h2>{% if action == 'create' %}Новий бюджет{% else %}Редагувати бюджет{% endif %}</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Зберегти</button>
+    </form>
+</div>
+{% endblock %}

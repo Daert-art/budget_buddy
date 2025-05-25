@@ -206,3 +206,32 @@ footer {
     font-size: 14px;
     background-color: transparent;
 }
+
+.progress {
+    background-color: #e9ecef;
+    height: 20px;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    line-height: 20px;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+}
+
+.bg-success {
+    background-color: #198754 !important;
+}
+
+.bg-warning {
+    background-color: #ffc107 !important;
+}
+
+.bg-danger {
+    background-color: #dc3545 !important;
+}
+
+

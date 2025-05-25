@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Категорії{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <h2>Список категорій</h2>
+    <a href="{% url 'core:category_create' %}" class="btn btn-success">➕ Додати категорію</a>
+    <br><br>
+    {% if categories %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Назва</th>
+                    <th>Тип</th>
+                    <th>Дії</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for category in categories %}
+                    <tr>
+                        <td>{{ category.name }}</td>
+                        <td>{{ category.get_type_display }}</td>
+                        <td>
+                            <a href="{% url 'core:category_update' category.pk %}" class="btn btn-sm btn-primary">✏️</a>
+                            <form action="{% url 'core:category_delete' category.pk %}" method="post" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Ви впевнені?')">🗑</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Немає жодної категорії.</p>
+    {% endif %}
+</div>
+{% endblock %}

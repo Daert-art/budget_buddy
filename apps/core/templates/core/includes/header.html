@@ -1,23 +1,32 @@
 {% load static %}
 
 <header>
-  <nav class="header">
-    <!-- Блок з логотипом і назвою -->
-    <div class="header-brand">
-      <a href="{% url 'core:operations' %}">
-        <!-- Поклади файл logo.png в static/images/ -->
-        <img src="{% static 'images/logo.png' %}"
-             alt="BudgetBuddy Logo"
-             class="app-logo">
-        <span class="app-title">BudgetBuddy - твій фінансовий помічник</span>
-      </a>
-    </div>
+    <nav class="header">
+        <!-- Блок з логотипом і назвою -->
+        <div class="header-brand">
+            <a href="{% url 'core:operations' %}">
+                <!-- Поклади файл logo.png в static/images/ -->
+                <img src="{% static 'images/logo.png' %}"
+                     alt="BudgetBuddy Logo"
+                     class="app-logo">
+                <span class="app-title">BudgetBuddy - твій фінансовий помічник</span>
+            </a>
+        </div>
 
-    <!-- Навігація -->
-    <ul class="header-nav">
-      <li><a href="{% url 'core:operations' %}">Operations</a></li>
-      <li><a href="{% url 'core:tag_list'    %}">Tags</a></li>
-      <li><a href="{% url 'logout'            %}">Logout</a></li>
-    </ul>
-  </nav>
+        <!-- Навігація -->
+        <ul class="header-nav">
+            <li><a href="{% url 'core:operations' %}">Операції</a></li>
+            <li><a href="{% url 'core:category_list' %}">Категорії</a></li>
+            <li><a href="{% url 'core:tag_list' %}">Теги</a></li>
+            <li><a href="{% url 'core:budget_list' %}">Бюджети</a></li>
+            <li>{% if account %}
+                <a href="{% url 'core:account_detail' account.pk %}">Аккаунт</a>
+            {% else %}
+                <span>Аккаунт</span> <!-- Якщо обліковий запис не існує, показуємо текст -->
+            {% endif %}
+            </li>
+            <li><a href="{% url 'core:recurring_list' %}">Повторювані операції</a></li>
+            <li><a href="{% url 'logout' %}">Вихід</a></li>
+        </ul>
+    </nav>
 </header>

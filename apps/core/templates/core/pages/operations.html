@@ -3,62 +3,66 @@
 
 {% block content %}
     <main class="main-wrapper">
-        {#        <div class="container">#}
-        {#            <p>#}
-        {#                <a href="{% url 'core:tag_list' %}">🔖 Список тегів</a> |#}
-        {#                <a href="{% url 'core:tag_add' %}">➕ Додати тег</a>#}
-        {#            </p>#}
-        {#        </div>#}
+        <div class="container d-flex gap-5">
+            <!-- LEFT SIDE: Form + Table -->
+            <div class="w-75">
+                <form action="{% url 'core:operations' %}" method="post" class="form-flex mb-4">
+                    {% csrf_token %}
+                    <input type="number" name="amount" placeholder="Сума" required>
+                    <input type="date" name="date" required>
+                    <input type="text" name="description" placeholder="Опис" required>
+                    <select name="type" id="type" required>
+                        {% for type in type_choices %}
+                            <option value="{{ type.value }}" {% if type.value == 'EXPENSE' %}selected{% endif %}>
+                                {{ type.label }}
+                            </option>
+                        {% endfor %}
+                    </select>
 
-        <div class="container">
-            <form action="{% url 'core:operations' %}" method="post" class="form-flex">
-                {% csrf_token %}
-                <input type="number" name="amount" placeholder="Сума" required>
-                <input type="date" name="date" required>
-                <input type="text" name="description" placeholder="Опис" required>
-                <select name="type" id="type" required>
-                    {% for type in type_choices %}
-                        <option value="{{ type.value }}"
-                                {% if type.value == 'EXPENSE' %}selected{% endif %}
-                        >
-                            {{ type.label }}
-                        </option>
-                    {% endfor %}
-                </select>
+                    <select name="category" required>
+                        <option value="">— Виберіть категорію —</option>
+                        {% for category in categories %}
+                            <option value="{{ category.id }}">{{ category.name }}</option>
+                        {% endfor %}
+                    </select>
 
-                <select name="tag">
-                    <option value="">— Без тега —</option>
-                    {% for tag in tags_list %}
-                        <option value="{{ tag.id }}">{{ tag.name }}</option>
-                    {% endfor %}
-                </select>
+                    <select name="tag">
+                        <option value="">— Без тега —</option>
+                        {% for tag in tags_list %}
+                            <option value="{{ tag.id }}">{{ tag.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit" class="btn btn-primary">💾 Зберегти</button>
+                </form>
 
-                <button type="submit">💾 Зберегти</button>
-            </form>
-        </div>
-
-        <div class="container">
-            <table class="form-container">
-                <tr>
-                    <th>Сума</th>
-                    <th>Дата</th>
-                    <th>Опис</th>
-                    <th>Тип</th>
-                    <th>Tag</th>
-                    <th></th>
-                </tr>
-                {% for operation in operations_list %}
+                <h4>Операції</h4>
+                <table class="form-container">
+                    <thead>
                     <tr>
-                        <td>{{ operation.amount }}</td>
-                        <td>{{ operation.date }}</td>
-                        <td>{{ operation.description }}</td>
-                        <td>{{ operation.get_type_display }}</td>
-                        <td>{{ operation.tag.name|default:"- Без тега -" }}</td>
-                        <td><a href="{% url 'core:operation_detail' operation.id %}">⋮⋮⋮</a></td>
+                        <th>Сума</th>
+                        <th>Дата</th>
+                        <th>Опис</th>
+                        <th>Тип</th>
+                        <th>Категорія</th>
+                        <th>Тег</th>
+                        <th></th>
                     </tr>
-                {% endfor %}
-            </table>
+                    </thead>
+                    <tbody>
+                    {% for operation in operations_list %}
+                        <tr>
+                            <td>{{ operation.amount }}</td>
+                            <td>{{ operation.date }}</td>
+                            <td>{{ operation.description }}</td>
+                            <td>{{ operation.get_type_display }}</td>
+                            <td>{{ operation.category.name|default:"—" }}</td>
+                            <td>{{ operation.tag.name|default:"- Без тега -" }}</td>
+                            <td><a href="{% url 'core:operation_detail' operation.id %}">✏️</a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
-
     </main>
 {% endblock content %}

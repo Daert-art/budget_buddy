@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% load custom_filters %}
+
+{% block title %}Бюджети{% endblock title %}
+
+{% block content %}
+    <div class="container">
+        <h2>📊 Бюджети по категоріях</h2>
+
+        <p>
+            <a href="{% url 'core:budget_create' %}" class="btn btn-success">➕ Додати бюджет</a>
+        </p>
+
+        <!-- Статистика -->
+        <div class="row mb-4">
+            <div class="col">
+                <div class="card text-white bg-primary mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Загальний ліміт</h5>
+                        <p class="card-text">{{ total_limit }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card text-white bg-warning mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Витрачено</h5>
+                        <p class="card-text">{{ total_spent }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card text-white bg-success mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Залишок</h5>
+                        <p class="card-text">{{ total_remaining }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card text-white bg-info mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Загальний прогрес</h5>
+                        <div class="progress">
+                            <div class="progress-bar {% if total_percent < 80 %}bg-success{% elif total_percent < 100 %}bg-warning{% else %}bg-danger{% endif %}"
+                                 role="progressbar"
+                                 style="width: {{ total_percent }}%"
+                                 aria-valuenow="{{ total_percent }}"
+                                 aria-valuemin="0"
+                                 aria-valuemax="100">
+                                {{ total_percent }}%
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if budgets %}
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>Категорія</th>
+                    <th>Період</th>
+                    <th>Ліміт</th>
+                    <th>Витрачено</th>
+                    <th>Залишок</th>
+                    <th>Прогрес</th>
+                    <th>Дії</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for budget in budgets %}
+                    {% with spent=budget.spent_amount remaining=budget.remaining %}
+                        {% with raw_percent=spent|div:budget.limit_amount %}
+                            {% with percent=raw_percent|floatformat:0 %}
+                                <tr class="{% if budget.is_exceeded %}table-danger{% endif %}">
+                                    <td>{{ budget.category.name }}</td>
+                                    <td>{{ budget.period_start }} — {{ budget.period_end }}</td>
+                                    <td>{{ budget.limit_amount }}</td>
+                                    <td>{{ spent }}</td>
+                                    <td>{{ remaining }}</td>
+                                    <td style="width: 200px">
+                                        <div class="progress">
+                                            <div class="progress-bar {{ percent|budget_color }}"
+                                                 role="progressbar"
+                                                 style="width: {% if percent|floatformat:0 > 100 %}100{% else %}{{ percent }}{% endif %}%;"
+                                                 aria-valuenow="{{ percent }}"
+                                                 aria-valuemin="0"
+                                                 aria-valuemax="100">
+                                                {{ percent }}%
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'core:budget_update' budget.pk %}">✏️</a>
+                                        <form method="post" action="{% url 'core:budget_delete' budget.pk %}"
+                                              style="display:inline;">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-link p-0 m-0 align-baseline"
+                                                    onclick="return confirm('Видалити бюджет?')">🗑️
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endwith %}
+                        {% endwith %}
+                    {% endwith %}
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>Немає доданих бюджетів.</p>
+        {% endif %}
+    </div>
+{% endblock content %}

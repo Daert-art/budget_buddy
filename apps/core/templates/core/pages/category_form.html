@@ -1,9 +1,9 @@
 {% extends "base.html" %}
-{% block title %}{% if action == 'create' %}Додати тег{% else %}Редагувати тег{% endif %}{% endblock %}
+{% block title %}Категорія{% endblock title %}
 
 {% block content %}
 <div class="container">
-    <h2>{% if action == 'create' %}Додати новий тег{% else %}Редагувати тег{% endif %}</h2>
+    <h2>{% if action == 'create' %}Створити{% else %}Редагувати{% endif %} категорію</h2>
 
     <form method="post">
         {% csrf_token %}
@@ -13,8 +13,8 @@
                 <td>{{ form.name }}</td>
             </tr>
             <tr>
-                <td>{{ form.category.label_tag }}</td>
-                <td>{{ form.category }}</td>
+                <td>{{ form.type.label_tag }}</td>
+                <td>{{ form.type }}</td>
             </tr>
             <tr>
                 <td colspan="2">
@@ -23,7 +23,5 @@
             </tr>
         </table>
     </form>
-
-    <p><a href="{% url 'core:tag_list' %}">← Назад до списку тегів</a></p>
 </div>
 {% endblock %}

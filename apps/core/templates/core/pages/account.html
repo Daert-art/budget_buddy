@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Account{% endblock title %}
+{% block content %}
+
+    <div class="container">
+        <h2>Поточна інформація</h2>
+        <ul>
+            <li><strong>Ім’я користувача:</strong> {{ account.user.username }}</li>
+            <li><strong>Email:</strong> {{ account.user.email }}</li>
+            <li><strong>Баланс:</strong> {{ account.balance }}</li>
+            <li><strong>Створено:</strong> {{ account.created_at|date:"Y-m-d H:i" }}</li>
+        </ul>
+
+        {% if account.image and account.image.name %}
+            <p><strong>Фото:</strong></p>
+            <img src="{{ account.image.url }}" alt="Account image" style="max-width:200px;">
+        {% else %}
+            <p><em>Фото не завантажене.</em></p>
+        {% endif %}
+
+
+    </div>
+
+    <div class="container">
+        <h3>Редагувати акаунт</h3>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <table>
+                <tr>
+                    <td>{{ account_form.name.label_tag }}</td>
+                    <td>{{ account_form.name }}</td>
+                </tr>
+                <tr>
+                    <td>{{ account_form.balance.label_tag }}</td>
+                    <td>{{ account_form.balance }}</td>
+                </tr>
+                <tr>
+                    <td>{{ account_form.currency.label_tag }}</td>
+                    <td>{{ account_form.currency }}</td>
+                </tr>
+                <tr>
+                    <td>{{ account_form.image.label_tag }}</td>
+                    <td>{{ account_form.image }}</td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <button type="submit" class="btn btn-primary">💾 Зберегти</button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+
+{% endblock content %}

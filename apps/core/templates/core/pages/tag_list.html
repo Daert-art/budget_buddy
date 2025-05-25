@@ -1,27 +1,55 @@
 {% extends "base.html" %}
+{% block title %}Tags{% endblock title %}
 {% block content %}
-    <h1>Мої теги</h1>
-    <a href="{% url 'core:tag_add' %}">➕ Додати новий тег</a>
-    <ul>
-        {% for tag in tags %}
-            <li>
-                {{ tag.name }}
-                [<a href="{% url 'core:tag_edit' tag.pk %}">Редагувати</a>]
-                {# Форма видалення #}
-                <form
-                        action="{% url 'core:tag_delete' tag.pk %}"
-                        method="post"
-                        style="display:inline; margin-left:0.5rem;"
-                >
-                    {% csrf_token %}
-                    <button type="submit"
-                            style="background:none; border:none; color:red; cursor:pointer;">
-                        [Видалити]
-                    </button>
-                </form>
-            </li>
-        {% empty %}
-            <li>Поки що немає жодного тегу.</li>
-        {% endfor %}
-    </ul>
-{% endblock %}
+
+    <div class="container">
+        <h2>Список тегів</h2>
+        <a href="{% url 'core:tag_create' %}" class="btn btn-success mb-3">➕ Додати тег</a>
+
+        {% if tags %}
+            <form method="get" class="mb-3">
+                <label for="category">Фільтр за категорією:</label>
+                <select name="category" id="category" class="form-select" style="width: auto; display: inline-block;">
+                    <option value="">Усі категорії</option>
+                    {% for category in categories %}
+                        <option value="{{ category.id }}"
+                                {% if selected_category_id == category.id %}selected{% endif %}>
+                            {{ category.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="btn btn-secondary">🔍 Пошук</button>
+            </form>
+
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Назва</th>
+                    <th>Категорія</th>
+                    <th>Дії</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for tag in tags %}
+                    <tr>
+                        <td>{{ tag.name }}</td>
+                        <td>{{ tag.category.name }}</td>
+                        <td>
+                            <a href="{% url 'core:tag_update' tag.pk %}" class="btn btn-sm btn-primary">✏️</a>
+                            <form method="post" action="{% url 'core:tag_delete' tag.pk %}" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-sm btn-danger"
+                                        onclick="return confirm('Ви впевнені?')">🗑️
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>Тегів ще не створено.</p>
+        {% endif %}
+    </div>
+
+{% endblock content %}
