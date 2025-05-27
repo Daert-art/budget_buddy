@@ -44,4 +44,5 @@ urlpatterns = [
     path('recurrings/create/', views.recurring_create, name='recurring_create'),
     path('recurrings/<int:pk>/update/', views.recurring_update, name='recurring_update'),
     path('recurrings/<int:pk>/delete/', views.recurring_delete, name='recurring_delete'),
+    path('operations/<int:pk>/operation-form/', views.operation_form_ajax, name='operation_detail_form'),
 ]

@@ -1,52 +1,61 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}Додати повторювану операцію{% endblock %}
 
 {% block content %}
-<div class="container">
-    <h2>➕ Додати повторювану операцію</h2>
+    <div class="container">
+        <h2>➕ Додати повторювану операцію</h2>
+        <div id="recurring-response"></div>
+        <form id="recurring-form"
+              method="post"
+              data-url="{% url 'core:recurring_create' %}"
+              class="form-flex">
+            {% csrf_token %}
 
-    <form method="post" class="form-flex">
-        {% csrf_token %}
+            <div>
+                <label for="{{ form.amount.id_for_label }}">Сума:</label><br>
+                {{ form.amount }}
+            </div>
 
-        <div>
-            <label for="{{ form.amount.id_for_label }}">Сума:</label><br>
-            {{ form.amount }}
-        </div>
+            <div>
+                <label for="{{ form.description.id_for_label }}">Опис:</label><br>
+                {{ form.description }}
+            </div>
 
-        <div>
-            <label for="{{ form.description.id_for_label }}">Опис:</label><br>
-            {{ form.description }}
-        </div>
+            <div>
+                <label for="{{ form.type.id_for_label }}">Тип операції:</label><br>
+                {{ form.type }}
+            </div>
 
-        <div>
-            <label for="{{ form.type.id_for_label }}">Тип операції:</label><br>
-            {{ form.type }}
-        </div>
+            <div>
+                <label for="{{ form.frequency.id_for_label }}">Частота:</label><br>
+                {{ form.frequency }}
+            </div>
 
-        <div>
-            <label for="{{ form.frequency.id_for_label }}">Частота:</label><br>
-            {{ form.frequency }}
-        </div>
+            <div>
+                <label for="{{ form.next_date.id_for_label }}">Наступна дата:</label><br>
+                {{ form.next_date }}
+            </div>
 
-        <div>
-            <label for="{{ form.next_date.id_for_label }}">Наступна дата:</label><br>
-            {{ form.next_date }}
-        </div>
+            <div>
+                <label for="{{ form.account.id_for_label }}">Рахунок:</label><br>
+                {{ form.account }}
+            </div>
 
-        <div>
-            <label for="{{ form.account.id_for_label }}">Рахунок:</label><br>
-            {{ form.account }}
-        </div>
+            <div>
+                <label for="{{ form.category.id_for_label }}">Категорія:</label><br>
+                {{ form.category }}
+            </div>
 
-        <div>
-            <label for="{{ form.category.id_for_label }}">Категорія:</label><br>
-            {{ form.category }}
-        </div>
+            <div style="margin-top: 15px;">
+                <button type="submit">💾 Зберегти</button>
+                <a href="{% url 'core:recurring_list' %}" class="btn btn-link">Назад</a>
+            </div>
+        </form>
 
-        <div style="margin-top: 15px;">
-            <button type="submit">💾 Зберегти</button>
-            <a href="{% url 'core:recurring_list' %}" class="btn btn-link">Назад</a>
-        </div>
-    </form>
-</div>
+    </div>
 {% endblock %}
+
+{% block scripts %}
+<script src="{% static 'core/js/recurring.js' %}"></script>
+{% endblock scripts %}

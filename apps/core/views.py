@@ -1,7 +1,8 @@
 from django import views
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods, require_POST
 
 from apps.core.forms import OperationForm, AccountForm, TagForm, BudgetForm, CategoryForm, RecurringForm
@@ -71,7 +72,7 @@ class OperationDetailUpdateView(views.View):
         operation = get_object_or_404(Operation, pk=pk)
         print(operation)
 
-        operation_form = OperationForm(instance=operation, prefix='operation')  # operation_form
+        operation_form = OperationForm(instance=operation)  # operation_form
         context = {
             'operation': operation,
             'operation_form': operation_form,
@@ -81,7 +82,7 @@ class OperationDetailUpdateView(views.View):
     def post(self, request, pk):
         operation = get_object_or_404(Operation, pk=pk)
 
-        operation_form = OperationForm(request.POST, instance=operation, prefix='operation')
+        operation_form = OperationForm(request.POST, instance=operation)
 
         if 'submit_operation' in request.POST:
             if operation_form.is_valid():
@@ -314,18 +315,42 @@ def recurring_list(request):
     return render(request, 'core/pages/recurring_list.html', {'recurrings': recurrings})
 
 
+# @login_required
+# @require_http_methods(["GET", "POST"])
+# def recurring_create(request):
+#     if request.method == 'POST':
+#         form = RecurringForm(request.POST)
+#         if form.is_valid():
+#             recurring = form.save(commit=False)
+#             recurring.user = request.user
+#             recurring.save()
+#             return redirect('core:recurring_list')
+#     else:
+#         form = RecurringForm()
+#     return render(request, 'core/pages/recurring_form.html', {'form': form})
+
 @login_required
 @require_http_methods(["GET", "POST"])
 def recurring_create(request):
     if request.method == 'POST':
-        form = RecurringForm(request.POST)
-        if form.is_valid():
-            recurring = form.save(commit=False)
-            recurring.user = request.user
-            recurring.save()
-            return redirect('core:recurring_list')
-    else:
-        form = RecurringForm()
+        print("POST request received")  # ← це додай
+        print("Is AJAX:", request.headers.get('x-requested-with'))  # ← і це
+
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            form = RecurringForm(request.POST)
+            print("Form valid?", form.is_valid())
+            print(form.errors)
+            if form.is_valid():
+                recurring = form.save(commit=False)
+                recurring.user = request.user
+                recurring.save()
+                return JsonResponse({'success': True})
+            else:
+                return JsonResponse({'success': False, 'error': form.errors.as_json()})
+        else:
+            print("Not an AJAX request")
+    # Fallback GET
+    form = RecurringForm()
     return render(request, 'core/pages/recurring_form.html', {'form': form})
 
 
@@ -349,3 +374,20 @@ def recurring_delete(request, pk):
     recurring = get_object_or_404(Recurring, pk=pk, user=request.user)
     recurring.delete()
     return redirect('core:recurring_list')
+
+# # @csrf_exempt
+@login_required
+@require_POST
+def operation_form_ajax(request, pk):
+    operation = get_object_or_404(Operation, pk=pk, user=request.user)
+    form = OperationForm(request.POST, instance=operation)
+
+    if form.is_valid():
+        form.instance.user = request.user
+        form.save()
+        return JsonResponse({'message': '✅ Операцію оновлено успішно!'})
+    else:
+        return JsonResponse({
+            'message': '❌ Форма містить помилки',
+            'errors': form.errors.as_json()
+        }, status=400)
