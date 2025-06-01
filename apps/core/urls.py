@@ -3,7 +3,7 @@ from django.urls import path
 from django.views.generic import RedirectView
 
 from apps.core import views
-from apps.core.views import hello, about_project, about_core
+from apps.core.views import hello, about_project, AboutCoreView
 
 # Оголошення простору імен namespace
 app_name = 'core'
@@ -13,7 +13,7 @@ urlpatterns = [
     # path('core/', about_core),
     # about-core адреса має писатись в стилі kebab-case
     path('about/', about_project, name='about_project'),
-    path('about/core/', about_core),
+    path('about/core/', AboutCoreView.as_view(), name='about_core'),
 
     #path('', views.welcome, name='welcome'),
 

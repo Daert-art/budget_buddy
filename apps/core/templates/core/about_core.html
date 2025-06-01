@@ -1,10 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<h2>About Core</h2>
-</body>
-</html>
+{% extends 'base.html' %}
+{% load static %}
+{% block header %}{% endblock %}
+
+{% block content %}
+<div class="welcome-section">
+    <div class="welcome-inner">
+        <div class="welcome-left">
+            <h1>Вітаємо у Budget Buddy!</h1>
+            <p class="lead">
+                Ви зараз увійшли як <strong>гість</strong>.
+                Для отримання повного доступу до можливостей системи — будь ласка, увійдіть або створіть обліковий запис.
+            </p>
+
+            <ul class="features">
+                <li>✅ Управління доходами та витратами</li>
+                <li>✅ Створення бюджетів</li>
+                <li>✅ Аналіз фінансової активності</li>
+                <li>✅ Повторювані операції та теги</li>
+                <li>🚀 Інтуїтивно зрозумілий інтерфейс</li>
+                <li>🔒 Для гостей доступ обмежено</li>
+            </ul>
+
+            <div class="cta-buttons">
+                <a href="{% url 'login' %}" class="btn">Увійти</a>
+                <a href="{% url 'users:register' %}" class="btn">Зареєструватися</a>
+                <a href="{% url 'core:welcome' %}" class="btn">На головну</a>
+            </div>
+        </div>
+
+        <div class="welcome-right">
+            <img src="{% static 'images/about_core_banner.png' %}" alt="Гість Budget Buddy">
+        </div>
+    </div>
+</div>
+{% endblock %}

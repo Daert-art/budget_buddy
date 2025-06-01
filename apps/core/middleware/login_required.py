@@ -11,6 +11,7 @@ EXEMPT_URLS = [
     'admin:index',
 
     'core:about_project',
+    'core:about_core',
     'core:welcome',
     'core:home',
 ]
@@ -31,7 +32,7 @@ class LoginRequiredMiddleware:
               return self.get_response(request)
 
        if not request.user.is_authenticated:
-           return redirect(f'{settings.LOGIN_URL}?next={request.path}')
+           return redirect('core:welcome')
 
        return self.get_response(request)
 
@@ -45,13 +46,15 @@ class RoleRequiredMiddleware:
     def __call__(self, request):
         if request.user.is_authenticated:
             resolver_match = resolve(request.path)
-            url_name = resolver_match.url_name
+            view_name = resolver_match.view_name
 
-            # if url_name == 'operations' and request.user.role != 'user':
-            #     return redirect('core:about_project')
-            if url_name == 'operations' and request.user.role == 'user':
+            if request.user.role == 'admin':
                 return self.get_response(request)
-            elif url_name == 'users' and request.user.role != 'admin':
-                return redirect('core:about_project')
+            elif view_name == 'users:users' and request.user.role != 'admin':
+                return redirect('core:operations')
+            elif request.user.role == 'guest':
+                if view_name == 'core:about_core' or view_name in EXEMPT_URLS:
+                    return self.get_response(request)
+                return redirect('core:about_core')
 
         return self.get_response(request)

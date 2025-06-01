@@ -5,6 +5,7 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods, require_POST
+from django.views.generic import TemplateView
 
 from apps.core.forms import OperationForm, AccountForm, TagForm, BudgetForm, CategoryForm, RecurringForm
 from apps.core.models import Operation, Tag, Account, Budget, Category, Recurring
@@ -23,8 +24,8 @@ def about_project(request):
     return render(request, 'about_project.html')
 # SECURITY 1
 #@login_required
-def about_core(request):
-    return render(request, 'core/about_core.html')
+class AboutCoreView(TemplateView):
+    template_name = 'core/about_core.html'
 
 
 #@login_required

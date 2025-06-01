@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Користувачі{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h2>Список користувачів</h2>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Ім’я користувача</th>
+                <th>Email</th>
+                <th>Роль</th>
+                <th>Дії</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>
+                        <form method="post" style="display: flex; gap: 10px;">
+                            {% csrf_token %}
+                            <input type="hidden" name="user_id" value="{{ user.id }}">
+                            <select name="role" class="form-select">
+                                <option value="user" {% if user.role == 'user' %}selected{% endif %}>Користувач</option>
+                                <option value="guest" {% if user.role == 'guest' %}selected{% endif %}>Гість</option>
+                                <option value="admin" {% if user.role == 'admin' %}selected{% endif %}>Адміністратор
+                                </option>
+                            </select>
+                            <button type="submit" class="logout-button">Зберегти</button>
+                        </form>
+                    </td>
+                    <td>
+                        {# можна додати додаткові дії #}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

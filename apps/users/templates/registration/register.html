@@ -5,6 +5,24 @@
 <div class="container login-container">
     <div class="login-box">
         <h2>Реєстрація</h2>
+
+        {# Блок для відображення помилок #}
+        {% if form.errors %}
+            <div class="form-errors" style="color: red; padding: 10px; background-color: #330000; border-radius: 6px; margin-bottom: 15px;">
+                <p>Будь ласка, виправте помилки у формі:</p>
+                <ul>
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
         <form method="post" enctype="multipart/form-data" class="form-flex form-vertical">
             {% csrf_token %}
 
