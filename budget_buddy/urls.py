@@ -26,6 +26,7 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     # '' http://localhost:8000/
     path('', include('apps.core.urls', namespace='core')),
+    path('accounts/', include('apps.users.urls', namespace='users')),
 ]
 #!!!!! MEDIA
 if settings.DEBUG:

@@ -1,5 +1,6 @@
 from django import views
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
@@ -20,13 +21,13 @@ def hello(request):
 
 def about_project(request):
     return render(request, 'about_project.html')
-
-
+# SECURITY 1
+#@login_required
 def about_core(request):
     return render(request, 'core/about_core.html')
 
 
-@login_required
+#@login_required
 @require_http_methods(['GET', 'POST'])
 def operations(request):
     # POST
@@ -66,13 +67,13 @@ def operations(request):
     }
     return render(request, 'core/pages/operations.html', context)
 
-
+#SECURITY 2 LoginRequiredMixin має наслідуватися першим
 class OperationDetailUpdateView(views.View):
     def get(self, request, pk):
         operation = get_object_or_404(Operation, pk=pk)
         print(operation)
 
-        operation_form = OperationForm(instance=operation)  # operation_form
+        operation_form = OperationForm(instance=operation, user=request.user)  # operation_form
         context = {
             'operation': operation,
             'operation_form': operation_form,
@@ -82,7 +83,7 @@ class OperationDetailUpdateView(views.View):
     def post(self, request, pk):
         operation = get_object_or_404(Operation, pk=pk)
 
-        operation_form = OperationForm(request.POST, instance=operation)
+        operation_form = OperationForm(request.POST, instance=operation, user=request.user)  # Передаємо користувача
 
         if 'submit_operation' in request.POST:
             if operation_form.is_valid():
@@ -98,7 +99,7 @@ class OperationDetailUpdateView(views.View):
         return render(request, 'core/pages/operation_detail.html', context)
 
 
-@login_required
+#@login_required
 @require_http_methods(['POST'])
 def operation_delete(request, pk):
     op = get_object_or_404(Operation, pk=pk, user=request.user)
@@ -122,7 +123,9 @@ class AccountDetailView(views.View):
         account_form = AccountForm(request.POST, request.FILES, instance=account)
 
         if account_form.is_valid():
-            account_form.save()
+            account = account_form.save(commit=False)
+            account.user = request.user
+            account.save()
             return redirect('core:account_detail', pk=account.pk)
         else:
             print("Errors:", account_form.errors)
@@ -138,7 +141,7 @@ class AccountDetailView(views.View):
 # TAGS CRUD
 # --------------------------------------------------------
 
-@login_required
+#@login_required
 @require_http_methods(['GET'])
 def tag_list(request):
     category_id = request.GET.get('category')
@@ -155,18 +158,18 @@ def tag_list(request):
     })
 
 
-@login_required
+#@login_required
 @require_http_methods(['GET', 'POST'])
 def tag_create(request):
     if request.method == 'POST':
-        form = TagForm(request.POST)
+        form = TagForm(request.POST, user=request.user)  # Передаємо користувача
         if form.is_valid():
             tag = form.save(commit=False)
             tag.user = request.user
             tag.save()
             return redirect('core:tag_list')
     else:
-        form = TagForm()
+        form = TagForm(user=request.user)
 
     return render(request, 'core/pages/tag_form.html', {
         'form': form,
@@ -174,18 +177,18 @@ def tag_create(request):
     })
 
 
-@login_required
+#@login_required
 @require_http_methods(['GET', 'POST'])
 def tag_update(request, pk):
     tag = get_object_or_404(Tag, pk=pk, user=request.user)
 
     if request.method == 'POST':
-        form = TagForm(request.POST, instance=tag)
+        form = TagForm(request.POST, instance=tag, user=request.user)  # Передаємо користувача
         if form.is_valid():
             form.save()
             return redirect('core:tag_list')
     else:
-        form = TagForm(instance=tag)
+        form = TagForm(instance=tag, user=request.user)  # Передаємо користувача
 
     return render(request, 'core/pages/tag_form.html', {
         'form': form,
@@ -194,7 +197,7 @@ def tag_update(request, pk):
     })
 
 
-@login_required
+#@login_required
 @require_http_methods(['POST'])
 def tag_delete(request, pk):
     tag = get_object_or_404(Tag, pk=pk, user=request.user)
@@ -206,7 +209,7 @@ def tag_delete(request, pk):
 # BUDGET CRUD
 # --------------------------------------------------------
 
-@login_required
+#@login_required
 def budget_list(request):
     budgets = Budget.objects.filter(user=request.user)
 
@@ -224,36 +227,36 @@ def budget_list(request):
     })
 
 
-@login_required
+#@login_required
 @require_http_methods(['GET', 'POST'])
 def budget_create(request):
     if request.method == 'POST':
-        form = BudgetForm(request.POST)
+        form = BudgetForm(request.POST, user=request.user)  # Передаємо користувача
         if form.is_valid():
             budget = form.save(commit=False)
             budget.user = request.user
             budget.save()
             return redirect('core:budget_list')
     else:
-        form = BudgetForm()
+        form = BudgetForm(user=request.user)  # Передаємо користувача
     return render(request, 'core/pages/budget_form.html', {'form': form, 'action': 'create'})
 
 
-@login_required
+#@login_required
 @require_http_methods(['GET', 'POST'])
 def budget_update(request, pk):
     budget = get_object_or_404(Budget, pk=pk, user=request.user)
     if request.method == 'POST':
-        form = BudgetForm(request.POST, instance=budget)
+        form = BudgetForm(request.POST, instance=budget, user=request.user)  # Передаємо користувача
         if form.is_valid():
             form.save()
             return redirect('core:budget_list')
     else:
-        form = BudgetForm(instance=budget)
+        form = BudgetForm(instance=budget, user=request.user)  # Передаємо користувача
     return render(request, 'core/pages/budget_form.html', {'form': form, 'action': 'update', 'budget': budget})
 
 
-@login_required
+#@login_required
 @require_POST
 def budget_delete(request, pk):
     budget = get_object_or_404(Budget, pk=pk, user=request.user)
@@ -264,14 +267,14 @@ def budget_delete(request, pk):
 # Категорії
 
 
-@login_required
+#@login_required
 @require_http_methods(["GET"])
 def category_list(request):
     categories = Category.objects.filter(user=request.user)
     return render(request, 'core/pages/category_list.html', {'categories': categories})
 
 
-@login_required
+#@login_required
 @require_http_methods(["GET", "POST"])
 def category_create(request):
     if request.method == 'POST':
@@ -286,7 +289,7 @@ def category_create(request):
     return render(request, 'core/pages/category_form.html', {'form': form, 'action': 'create'})
 
 
-@login_required
+#@login_required
 @require_http_methods(["GET", "POST"])
 def category_update(request, pk):
     category = get_object_or_404(Category, pk=pk, user=request.user)
@@ -300,7 +303,7 @@ def category_update(request, pk):
     return render(request, 'core/pages/category_form.html', {'form': form, 'action': 'update'})
 
 
-@login_required
+#@login_required
 @require_http_methods(["POST"])
 def category_delete(request, pk):
     category = get_object_or_404(Category, pk=pk, user=request.user)
@@ -309,7 +312,7 @@ def category_delete(request, pk):
 
 
 # Recurring Operations
-@login_required
+#@login_required
 def recurring_list(request):
     recurrings = Recurring.objects.filter(user=request.user)
     return render(request, 'core/pages/recurring_list.html', {'recurrings': recurrings})
@@ -329,15 +332,16 @@ def recurring_list(request):
 #         form = RecurringForm()
 #     return render(request, 'core/pages/recurring_form.html', {'form': form})
 
-@login_required
+#@login_required
 @require_http_methods(["GET", "POST"])
 def recurring_create(request):
     if request.method == 'POST':
-        print("POST request received")  # ← це додай
-        print("Is AJAX:", request.headers.get('x-requested-with'))  # ← і це
+        print("POST request received")
+        print("Is AJAX:", request.headers.get('x-requested-with'))
+
+        form = RecurringForm(request.POST, user=request.user)  # ← user передаємо сюди
 
         if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-            form = RecurringForm(request.POST)
             print("Form valid?", form.is_valid())
             print(form.errors)
             if form.is_valid():
@@ -348,27 +352,33 @@ def recurring_create(request):
             else:
                 return JsonResponse({'success': False, 'error': form.errors.as_json()})
         else:
-            print("Not an AJAX request")
-    # Fallback GET
-    form = RecurringForm()
+            if form.is_valid():
+                recurring = form.save(commit=False)
+                recurring.user = request.user
+                recurring.save()
+                return redirect('core:recurring_list')
+    else:
+        form = RecurringForm(user=request.user)  # ← ВАЖЛИВО: user передаємо сюди
+
     return render(request, 'core/pages/recurring_form.html', {'form': form})
 
 
-@login_required
+
+#@login_required
 @require_http_methods(["GET", "POST"])
 def recurring_update(request, pk):
     recurring = get_object_or_404(Recurring, pk=pk, user=request.user)
     if request.method == 'POST':
-        form = RecurringForm(request.POST, instance=recurring)
+        form = RecurringForm(request.POST, instance=recurring, user=request.user)  # Передаємо користувача
         if form.is_valid():
             form.save()
             return redirect('core:recurring_list')
     else:
-        form = RecurringForm(instance=recurring)
+        form = RecurringForm(instance=recurring, user=request.user)  # Передаємо користувача
     return render(request, 'core/pages/recurring_form.html', {'form': form, 'action': 'update'})
 
 
-@login_required
+#@login_required
 @require_POST
 def recurring_delete(request, pk):
     recurring = get_object_or_404(Recurring, pk=pk, user=request.user)
@@ -376,11 +386,11 @@ def recurring_delete(request, pk):
     return redirect('core:recurring_list')
 
 # # @csrf_exempt
-@login_required
+#@login_required
 @require_POST
 def operation_form_ajax(request, pk):
     operation = get_object_or_404(Operation, pk=pk, user=request.user)
-    form = OperationForm(request.POST, instance=operation)
+    form = OperationForm(request.POST, instance=operation, user=request.user)  # Передаємо користувача
 
     if form.is_valid():
         form.instance.user = request.user
@@ -391,3 +401,8 @@ def operation_form_ajax(request, pk):
             'message': '❌ Форма містить помилки',
             'errors': form.errors.as_json()
         }, status=400)
+
+def welcome(request):
+    # if request.user.is_authenticated:
+    #     return redirect('core:operations')
+    return render(request, 'core/pages/welcome.html')

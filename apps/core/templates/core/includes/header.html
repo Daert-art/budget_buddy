@@ -9,7 +9,7 @@
                 <img src="{% static 'images/logo.png' %}"
                      alt="BudgetBuddy Logo"
                      class="app-logo">
-                <span class="app-title">BudgetBuddy - твій фінансовий помічник</span>
+                <span class="app-title">Твій фінансовий помічник</span>
             </a>
         </div>
 
@@ -26,7 +26,15 @@
             {% endif %}
             </li>
             <li><a href="{% url 'core:recurring_list' %}">Повторювані операції</a></li>
-            <li><a href="{% url 'logout' %}">Вихід</a></li>
+            <li><a href="{% url 'core:about_project' %}">Про проєкт</a></li>
+            <li>
+                <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="logout-button">Вийти</button>
+                </form>
+            </li>
+
         </ul>
+
     </nav>
 </header>

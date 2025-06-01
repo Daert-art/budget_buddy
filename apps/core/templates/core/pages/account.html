@@ -13,42 +13,67 @@
 
         {% if account.image and account.image.name %}
             <p><strong>Фото:</strong></p>
-            <img src="{{ account.image.url }}" alt="Account image" style="max-width:200px;">
+            <img src="{{ account.image.url }}" alt="Account image"
+                 style="max-width:150px; border-radius: 8px; border: 2px solid #555;">
         {% else %}
             <p><em>Фото не завантажене.</em></p>
         {% endif %}
-
-
     </div>
 
-    <div class="container">
-        <h3>Редагувати акаунт</h3>
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <table>
-                <tr>
-                    <td>{{ account_form.name.label_tag }}</td>
-                    <td>{{ account_form.name }}</td>
-                </tr>
-                <tr>
-                    <td>{{ account_form.balance.label_tag }}</td>
-                    <td>{{ account_form.balance }}</td>
-                </tr>
-                <tr>
-                    <td>{{ account_form.currency.label_tag }}</td>
-                    <td>{{ account_form.currency }}</td>
-                </tr>
-                <tr>
-                    <td>{{ account_form.image.label_tag }}</td>
-                    <td>{{ account_form.image }}</td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <button type="submit" class="btn btn-primary">💾 Зберегти</button>
-                    </td>
-                </tr>
-            </table>
-        </form>
+    <!-- Блок с раскрывающейся формой -->
+    <div class="container" style="margin-top: 20px;">
+        <details>
+            <summary style="font-size: 1.3rem; cursor: pointer; font-weight: bold; padding: 10px 0;">Редагувати акаунт
+            </summary>
+            <form method="post" enctype="multipart/form-data" class="form-flex" style="margin-top: 15px;">
+                {% csrf_token %}
+
+                <div style="flex: 1 1 300px;">
+                    <label for="{{ account_form.name.id_for_label }}">Назва:</label>
+                    {{ account_form.name }}
+                </div>
+
+                <div style="flex: 1 1 300px;">
+                    <label for="{{ account_form.balance.id_for_label }}">Баланс:</label>
+                    {{ account_form.balance }}
+                </div>
+
+                <div style="flex: 1 1 300px;">
+                    <label for="{{ account_form.currency.id_for_label }}">Валюта:</label>
+                    {{ account_form.currency }}
+                </div>
+
+                <div style="flex: 1 1 300px;">
+                    <label for="{{ account_form.image.id_for_label }}">Зображення:</label><br>
+
+                    {% if account.image and account.image.name %}
+                        <div style="margin-bottom: 8px;">
+                            <img src="{{ account.image.url }}" alt="Account image"
+                                 style="max-width: 150px; border-radius: 8px; border: 2px solid #555;"><br>
+                            <span style="font-size: 0.9rem; color: #ccc;">Файл завантажено</span>
+                        </div>
+
+                        {{ account_form.image }}
+
+                        {% if account_form.image_clear %}
+                            <div style="margin-top: 6px;">
+                                {{ account_form.image_clear }}
+                                <label for="{{ account_form.image_clear.id_for_label }}">Очистити зображення</label>
+                            </div>
+                        {% endif %}
+
+                    {% else %}
+                        <em>Фото не завантажене.</em>
+                        {{ account_form.image }}
+                    {% endif %}
+                </div>
+
+
+                <div style="flex: 1 1 100%;">
+                    <button type="submit" class="logout-button">💾 Зберегти</button>
+                </div>
+            </form>
+        </details>
     </div>
 
 {% endblock content %}

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block header %}{% endblock %}
+
+{% block content %}
+<div class="container login-container">
+    <div class="login-box">
+        <h2>Реєстрація</h2>
+        <form method="post" enctype="multipart/form-data" class="form-flex form-vertical">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="id_username">Ім'я користувача:</label>
+                {{ form.username }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_email">Email:</label>
+                {{ form.email }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_password1">Пароль:</label>
+                {{ form.password1 }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_password2">Підтвердження пароля:</label>
+                {{ form.password2 }}
+            </div>
+
+            <button type="submit" class="logout-button">Зареєструватися</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

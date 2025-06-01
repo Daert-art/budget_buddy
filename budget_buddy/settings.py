@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'apps.core',
+    'apps.users',
 ]
 
 MIDDLEWARE = [
@@ -50,6 +51,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'apps.core.middleware.login_required.LoginRequiredMiddleware',
+    'apps.core.middleware.login_required.RoleRequiredMiddleware',
 ]
 
 ROOT_URLCONF = 'budget_buddy.urls'
@@ -130,3 +134,12 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# LOGIN
+from apps import users
+
+AUTH_USER_MODEL = 'users.CustomUser'
+#LOGIN_URL = 'login'
+LOGIN_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = '/operations'
+LOGOUT_REDIRECT_URL = '/welcome'

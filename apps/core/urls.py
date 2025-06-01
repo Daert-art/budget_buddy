@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.urls import path
 from django.views.generic import RedirectView
 
@@ -11,13 +12,17 @@ urlpatterns = [
     # path('', about_project),
     # path('core/', about_core),
     # about-core адреса має писатись в стилі kebab-case
-    path('about/', about_project),
+    path('about/', about_project, name='about_project'),
     path('about/core/', about_core),
 
-    path('', RedirectView.as_view(pattern_name='core:operations', permanent=False)),
+    #path('', views.welcome, name='welcome'),
+
+    path('welcome/', views.welcome, name='welcome'),
+    path('', RedirectView.as_view(pattern_name='core:welcome', permanent=False), name='home'),
     path('operations/', views.operations, name='operations'),  # core:operations
     path('operations/<int:pk>/', views.OperationDetailUpdateView.as_view(), name='operation_detail'),
     path('operations/<int:pk>/delete/', views.operation_delete, name='operation_delete'),
+
 
     # Теги
     path('tags/', views.tag_list, name='tag_list'),

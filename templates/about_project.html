@@ -1,10 +1,92 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<h2>About Project</h2>
-</body>
-</html>
+{% extends "base.html" %}
+{% load static %}
+{% load tz %}
+{% load i18n %}
+
+{% block header %} {% endblock %}
+
+
+{% block title %}Про проєкт{% endblock %}
+
+{% block content %}
+
+    <!-- БАНЕР З ФОНОМ -->
+    <div style="
+            background: url('{% static 'images/banner.jpg' %}') center center / cover no-repeat;
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            position: relative;
+            overflow: hidden;
+            ">
+
+        <!-- Підкладка для затемнення -->
+        <div style="
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1;
+    "></div>
+
+        <!-- Текст банера -->
+        <div style="position: relative; z-index: 2;">
+            <h1 style="font-size: 2.8rem; margin-bottom: 10px;">Budget Buddy</h1>
+            <p style="font-size: 1.3rem;">Твій фінансовий помічник для розумного управління бюджетом</p>
+        </div>
+    </div>
+
+    <!-- ЗМІСТ -->
+    <div class="container">
+
+        <h3>Мета проєкту</h3>
+        <p style="font-size: 1.1rem; line-height: 1.6;">
+            <strong>Budget Buddy</strong> — це персональний фінансовий помічник, створений для того, щоб допомогти вам
+            ефективно керувати своїми доходами та витратами.
+        </p>
+
+        <h3>Цільова аудиторія</h3>
+        <p style="font-size: 1.1rem; line-height: 1.6;">
+            - Приватні користувачі, які хочуть краще контролювати особисті фінанси<br>
+            - Родини, які планують спільний бюджет<br>
+            - Студенти, фрілансери, працівники будь-яких сфер
+        </p>
+
+        <h3>Основні функції</h3>
+        <ul>
+            <li>Реєстрація та авторизація користувачів</li>
+            <li>Створення рахунків (гаманців)</li>
+            <li>Додавання операцій (доходів / витрат)</li>
+            <li>Категорії та теги для операцій</li>
+            <li>Планування бюджетів по категоріях</li>
+            <li>Підтримка повторюваних операцій</li>
+            <li>Графіки та прогрес-бари по бюджетах</li>
+            <li>Гарний, зручний та сучасний інтерфейс</li>
+        </ul>
+
+        <h3>Використані технології</h3>
+        <ul>
+            <li>Python 3.13 + Django 5.2</li>
+            <li>SQLite / PostgreSQL</li>
+            <li>HTML5, CSS3 (кастомні стилі)</li>
+            <li>Шаблонізація Django Template Language (DTL)</li>
+        </ul>
+
+        <h3>Автор проєкту</h3>
+        <p style="font-size: 1.1rem; line-height: 1.6;">
+            Розробник: Артем Денісов<br>
+            Навчальний проєкт у рамках курсу по Django / Веб-розробці.<br>
+            Версія проєкту: 1.0
+        </p>
+
+        <p style="margin-top: 40px; text-align: center;">
+            <a href="{% url 'core:operations' %}" style="color: #4b79a1; text-decoration: underline; font-weight: bold;">
+                ⬅ Повернутися на головну сторінку
+            </a>
+        </p>
+
+
+    </div>
+{% endblock %}

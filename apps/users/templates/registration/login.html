@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block header %}{% endblock %}
+
+{% block content %}
+<div class="container login-container">
+    <div class="login-box">
+        <h2>Вхід до системи</h2>
+        <form method="post" class="form-flex form-vertical">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="id_username">Ім'я користувача:</label>
+                {{ form.username }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_password">Пароль:</label>
+                {{ form.password }}
+            </div>
+
+            <button type="submit" class="logout-button">Увійти</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
