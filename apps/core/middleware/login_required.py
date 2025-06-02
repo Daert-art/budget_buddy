@@ -11,7 +11,7 @@ EXEMPT_URLS = [
     'admin:index',
 
     'core:about_project',
-    'core:about_core',
+    #'core:about_core',
     'core:welcome',
     'core:home',
 ]
